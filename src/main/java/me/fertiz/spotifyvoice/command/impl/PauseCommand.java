@@ -1,6 +1,7 @@
 package me.fertiz.spotifyvoice.command.impl;
 
 import me.fertiz.spotifyvoice.client.SpotifyClient;
+import me.fertiz.spotifyvoice.command.CommandFactory;
 import me.fertiz.spotifyvoice.command.CommandResult;
 import me.fertiz.spotifyvoice.command.VoiceCommand;
 
@@ -25,6 +26,10 @@ public class PauseCommand implements VoiceCommand {
     @Override
     public String name() {
         return "pause";
+    }
+
+    public static CommandFactory factory(SpotifyClient spotify) {
+        return (matcher) -> new PauseCommand(spotify);
     }
 }
 

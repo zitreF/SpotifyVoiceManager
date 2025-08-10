@@ -20,8 +20,7 @@ public class CommandParser {
 
     public CommandParser(SpotifyClient spotify) {
         this.registerCommand(PlayCommand.PATTERN, PlayCommand.factory(spotify));
-        this.registerCommand(PauseCommand.PATTERN, (matcher) -> new PauseCommand(spotify));
-        this.registerCommand(SkipMultipleCommand.PATTERN, SkipMultipleCommand.factory(spotify));
+        this.registerCommand(PauseCommand.PATTERN, PauseCommand.factory(spotify));
         this.registerCommand(SkipCommand.PATTERN, SkipCommand.factory(spotify));
         this.registerCommand(PlayLikedSongsCommand.PATTERN, PlayLikedSongsCommand.factory(spotify));
     }

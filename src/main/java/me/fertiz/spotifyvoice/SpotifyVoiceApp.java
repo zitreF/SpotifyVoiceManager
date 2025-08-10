@@ -22,7 +22,7 @@ public class SpotifyVoiceApp {
 
     private static final String CLIENT_ID = System.getenv("SPOTIFY_CLIENT_ID");
     private static final String CLIENT_SECRET = System.getenv("SPOTIFY_CLIENT_SECRET");
-    private static final String REDIRECT_URI = "http://127.0.0.1:9090/spotifyvoiceapp";
+    private static final String REDIRECT_URI = "http://127.0.0.1:9090/spotifyvoice";
     private static final int CALLBACK_PORT = 9090;
     private static final String SCOPES = "user-modify-playback-state user-read-playback-state user-read-currently-playing playlist-read-private playlist-modify-private user-library-read user-library-modify user-read-recently-played user-top-read";
 

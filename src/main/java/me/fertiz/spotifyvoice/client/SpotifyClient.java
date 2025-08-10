@@ -1,6 +1,5 @@
 package me.fertiz.spotifyvoice.client;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface SpotifyClient {
