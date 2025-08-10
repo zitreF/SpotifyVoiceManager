@@ -1,5 +1,7 @@
 package me.fertiz.spotifyvoice.client;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import me.fertiz.spotifyvoice.auth.OAuthTokenManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +12,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class SimpleHttpSpotifyClient implements SpotifyClient {
@@ -39,13 +43,12 @@ public class SimpleHttpSpotifyClient implements SpotifyClient {
 
     @Override
     public void play(String trackUri) throws Exception {
-        // build JSON body with context_uri or uris array
         String json = "{\"uris\": [\"" + trackUri + "\"]}";
 
         var req = base("https://api.spotify.com/v1/me/player/play")
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
-        sendAndHandle(req);
+        this.sendAndHandle(req);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class SimpleHttpSpotifyClient implements SpotifyClient {
         var req = base("https://api.spotify.com/v1/me/player/pause")
                 .PUT(HttpRequest.BodyPublishers.noBody())
                 .build();
-        sendAndHandle(req);
+        this.sendAndHandle(req);
     }
 
     @Override
@@ -61,7 +64,7 @@ public class SimpleHttpSpotifyClient implements SpotifyClient {
         var req = base("https://api.spotify.com/v1/me/player/next")
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
-        sendAndHandle(req);
+        this.sendAndHandle(req);
     }
 
     @Override
@@ -83,6 +86,20 @@ public class SimpleHttpSpotifyClient implements SpotifyClient {
             return Optional.ofNullable(first.get("uri").asText());
         }
         return Optional.empty();
+    }
+
+    @Override
+    public void playPlaylist(String playlistUri) throws Exception {
+        ObjectNode rootNode = MAPPER.createObjectNode();
+        rootNode.put("context_uri", playlistUri);
+
+        String json = MAPPER.writeValueAsString(rootNode);
+
+        var request = base("https://api.spotify.com/v1/me/player/play")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        this.sendAndHandle(request);
     }
 
     private void sendAndHandle(HttpRequest req) throws Exception {

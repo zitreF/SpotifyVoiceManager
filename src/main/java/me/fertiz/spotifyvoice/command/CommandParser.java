@@ -1,10 +1,7 @@
 package me.fertiz.spotifyvoice.command;
 
 import me.fertiz.spotifyvoice.client.SpotifyClient;
-import me.fertiz.spotifyvoice.command.impl.PauseCommand;
-import me.fertiz.spotifyvoice.command.impl.PlayCommand;
-import me.fertiz.spotifyvoice.command.impl.SkipCommand;
-import me.fertiz.spotifyvoice.command.impl.SkipMultipleCommand;
+import me.fertiz.spotifyvoice.command.impl.*;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -26,6 +23,7 @@ public class CommandParser {
         this.registerCommand(PauseCommand.PATTERN, (matcher) -> new PauseCommand(spotify));
         this.registerCommand(SkipMultipleCommand.PATTERN, SkipMultipleCommand.factory(spotify));
         this.registerCommand(SkipCommand.PATTERN, SkipCommand.factory(spotify));
+        this.registerCommand(PlayLikedSongsCommand.PATTERN, PlayLikedSongsCommand.factory(spotify));
     }
 
     private void registerCommand(Pattern pattern, CommandFactory factory) {
