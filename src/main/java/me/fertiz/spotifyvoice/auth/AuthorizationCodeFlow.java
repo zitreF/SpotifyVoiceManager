@@ -58,7 +58,10 @@ public class AuthorizationCodeFlow {
         }
 
         String code = codeFuture.get(180, TimeUnit.SECONDS);
-        server.stop(0);
+
+        Thread.sleep(500);
+
+        server.stop(1);
         return code;
     }
 
@@ -85,6 +88,7 @@ public class AuthorizationCodeFlow {
                     exchange.sendResponseHeaders(200, bytes.length);
                     try (OutputStream os = exchange.getResponseBody()) {
                         os.write(bytes);
+                        os.flush();
                     }
                 } catch (Exception e) {
                     codeFuture.completeExceptionally(e);
@@ -93,6 +97,7 @@ public class AuthorizationCodeFlow {
                     exchange.sendResponseHeaders(500, bytes.length);
                     try (OutputStream os = exchange.getResponseBody()) {
                         os.write(bytes);
+                        os.flush();
                     }
                 }
             }

@@ -11,11 +11,13 @@ import me.fertiz.spotifyvoice.recognition.VoiceRecognizer;
 import me.fertiz.spotifyvoice.recognition.impl.VoskVoiceRecognizer;
 
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 public class SpotifyVoiceApp {
@@ -44,7 +46,13 @@ public class SpotifyVoiceApp {
 
         OAuthTokenManager tokenManager = new OAuthTokenManager(CLIENT_ID, CLIENT_SECRET, refreshToken, tokenStore);
         SimpleHttpSpotifyClient spotifyClient = new SimpleHttpSpotifyClient(tokenManager);
-        VoiceRecognizer recognizer = new VoskVoiceRecognizer("E:\\Pulpit\\Intellij Projects\\SpotifyVoiceManagerApplication\\src\\main\\resources\\model-vosk"); // Adjust path accordingly
+
+        URL resource = SpotifyVoiceApp.class.getClassLoader().getResource("model-vosk");
+        if (resource == null) {
+            throw new IllegalStateException("Model folder not found in resources!");
+        }
+
+        VoiceRecognizer recognizer = new VoskVoiceRecognizer(Paths.get(resource.toURI()).toString());
 
         CommandParser commandParser = new CommandParser(spotifyClient);
 
