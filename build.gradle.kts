@@ -1,9 +1,12 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     id("java")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "me.fertiz.netflux"
-version = "1.0-SNAPSHOT"
+group = "me.fertiz"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -11,9 +14,35 @@ repositories {
 
 dependencies {
     implementation("org.slf4j:slf4j-api:2.0.9")
-    implementation("ch.qos.logback:logback-classic:1.4.11")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("com.alphacephei:vosk:0.3.45")
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes(
+            "Main-Class" to "me.fertiz.spotifyvoice.SpotifyVoiceApp"
+        )
+    }
+}
+
+tasks.named<ShadowJar>("shadowJar") {
+    archiveClassifier.set("")
+    mergeServiceFiles()
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+sourceSets {
+    named("main") {
+        resources {
+            srcDirs("src/main/resources")
+        }
+    }
 }
 
 tasks.test {
