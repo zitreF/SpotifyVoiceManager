@@ -58,5 +58,5 @@ Ensure you add this URI in your Spotify Developer Dashboard for your app's Redir
 - [ ] Add command arguments (ex.: "repeat", "no repeat", "shuffle", "no shuffle")
 ---
 
-Contributions, feedback, and feature requests are welcome!
-```
+**Contributions, feedback, and feature requests are welcome!**
+
