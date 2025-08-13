@@ -2,7 +2,9 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     id("java")
+    id("application")
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("edu.sc.seis.launch4j") version "4.0.0"
 }
 
 group = "me.fertiz"
@@ -17,6 +19,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("com.alphacephei:vosk:0.3.45")
 }
+
+project.setProperty("mainClassName", "me.fertiz.spotifyvoice.SpotifyVoiceApp")
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
@@ -47,4 +51,12 @@ sourceSets {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+launch4j {
+    outfile = "SpotifyVoiceApp.exe"
+    mainClassName = project.property("mainClassName") as String
+    headerType = "console"
+    stayAlive = false
+    setJarTask(project.tasks.shadowJar.get() as Jar)
 }

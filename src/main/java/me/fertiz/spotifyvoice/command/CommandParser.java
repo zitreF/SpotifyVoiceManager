@@ -16,16 +16,16 @@ public class CommandParser {
             "okay spotify"
     );
 
-    private final Map<Pattern, CommandFactory> commandFactories = new LinkedHashMap<>();
+    private final Map<Pattern, VoiceCommand> commandFactories = new LinkedHashMap<>();
 
     public CommandParser(SpotifyClient spotify) {
-        this.registerCommand(PlayCommand.PATTERN, PlayCommand.factory(spotify));
-        this.registerCommand(PauseCommand.PATTERN, PauseCommand.factory(spotify));
-        this.registerCommand(SkipCommand.PATTERN, SkipCommand.factory(spotify));
-        this.registerCommand(PlayLikedSongsCommand.PATTERN, PlayLikedSongsCommand.factory(spotify));
+        this.registerCommand(PlayCommand.PATTERN, new PlayCommand(spotify));
+        this.registerCommand(PauseCommand.PATTERN, new PauseCommand(spotify));
+        this.registerCommand(SkipCommand.PATTERN, new SkipCommand(spotify));
+        this.registerCommand(PlayLikedSongsCommand.PATTERN, new PlayLikedSongsCommand(spotify));
     }
 
-    private void registerCommand(Pattern pattern, CommandFactory factory) {
+    private void registerCommand(Pattern pattern, VoiceCommand factory) {
         commandFactories.put(pattern, factory);
     }
 
@@ -51,11 +51,15 @@ public class CommandParser {
             Pattern pattern = entry.getKey();
             Matcher matcher = pattern.matcher(commandPart);
             if (matcher.matches()) {
-                VoiceCommand cmd = entry.getValue().create(matcher);
+                VoiceCommand cmd = entry.getValue();
                 return Optional.of(cmd);
             }
         }
         return Optional.empty();
+    }
+
+    public Map<Pattern, VoiceCommand> getCommands() {
+        return commandFactories;
     }
 }
 

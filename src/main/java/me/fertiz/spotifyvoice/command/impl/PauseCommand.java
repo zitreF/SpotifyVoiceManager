@@ -5,6 +5,8 @@ import me.fertiz.spotifyvoice.command.CommandFactory;
 import me.fertiz.spotifyvoice.command.CommandResult;
 import me.fertiz.spotifyvoice.command.VoiceCommand;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class PauseCommand implements VoiceCommand {
@@ -28,8 +30,10 @@ public class PauseCommand implements VoiceCommand {
         return "pause";
     }
 
-    public static CommandFactory factory(SpotifyClient spotify) {
-        return (matcher) -> new PauseCommand(spotify);
+
+    @Override
+    public Collection<String> prefixes() {
+        return Set.of("pause", "stop");
     }
 }
 

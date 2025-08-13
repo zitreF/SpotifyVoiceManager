@@ -5,6 +5,8 @@ import me.fertiz.spotifyvoice.command.CommandFactory;
 import me.fertiz.spotifyvoice.command.CommandResult;
 import me.fertiz.spotifyvoice.command.VoiceCommand;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class SkipCommand implements VoiceCommand {
@@ -28,8 +30,9 @@ public class SkipCommand implements VoiceCommand {
         return "skip";
     }
 
-    public static CommandFactory factory(SpotifyClient spotify) {
-        return matcher -> new SkipCommand(spotify);
+    @Override
+    public Collection<String> prefixes() {
+        return Set.of("skip", "next", "next track");
     }
 }
 

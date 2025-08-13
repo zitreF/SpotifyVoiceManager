@@ -46,10 +46,11 @@ public class SpotifyVoiceApp {
         OAuthTokenManager tokenManager = new OAuthTokenManager(CLIENT_ID, CLIENT_SECRET, refreshToken, tokenStore);
         SimpleHttpSpotifyClient spotifyClient = new SimpleHttpSpotifyClient(tokenManager);
 
-        Path modelPath = ResourceUtil.extractResourceDirectory("model-vosk", SpotifyVoiceApp.class);
-        VoiceRecognizer recognizer = new VoskVoiceRecognizer(modelPath.toString());
 
         CommandParser commandParser = new CommandParser(spotifyClient);
+
+        Path modelPath = ResourceUtil.extractResourceDirectory("model-vosk", SpotifyVoiceApp.class);
+        VoiceRecognizer recognizer = new VoskVoiceRecognizer(commandParser, modelPath.toString());
 
         System.out.println("[INFO] Available prefixes: " + String.join(", ", CommandParser.PREFIXES));
         System.out.println("[INFO] Say commands like 'Hey spotify play', 'Hey spotify pause', 'Hey spotify skip'");

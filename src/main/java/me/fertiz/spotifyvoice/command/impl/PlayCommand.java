@@ -5,7 +5,9 @@ import me.fertiz.spotifyvoice.command.CommandFactory;
 import me.fertiz.spotifyvoice.command.CommandResult;
 import me.fertiz.spotifyvoice.command.VoiceCommand;
 
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,6 +45,11 @@ public class PlayCommand implements VoiceCommand {
     @Override
     public String name() {
         return "play";
+    }
+
+    @Override
+    public Collection<String> prefixes() {
+        return Set.of("play");
     }
 
     public static CommandFactory factory(SpotifyClient spotify) {
